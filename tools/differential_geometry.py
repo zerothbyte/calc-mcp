@@ -26,6 +26,14 @@ def _parse_metric(metric: str, coordinates: str):
             )
 
     g = sympy.Matrix(n, n, lambda i, j: safe_parse_expr(rows[i].split(",")[j].strip(), local_vars))
+
+    # Validate metric symmetry: g_ij must equal g_ji
+    if g != g.T:
+        raise ValueError(
+            "Metric tensor must be symmetric (g_ij = g_ji). "
+            "The provided metric is not symmetric."
+        )
+
     return g, syms, local_vars, n, coords
 
 
