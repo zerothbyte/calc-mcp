@@ -28,10 +28,13 @@ def _parse_metric(metric: str, coordinates: str):
     g = sympy.Matrix(n, n, lambda i, j: safe_parse_expr(rows[i].split(",")[j].strip(), local_vars))
 
     # Validate metric symmetry: g_ij must equal g_ji
-    if g != g.T:
+    diff = sympy.simplify(g - g.T)
+    if diff != sympy.zeros(n, n):
+        asymmetric = [(i, j) for i in range(n) for j in range(i+1, n) if diff[i, j] != 0]
+        pairs = ", ".join(f"g_{coords[i]}{coords[j]} ≠ g_{coords[j]}{coords[i]}" for i, j in asymmetric)
         raise ValueError(
-            "Metric tensor must be symmetric (g_ij = g_ji). "
-            "The provided metric is not symmetric."
+            f"Metric tensor must be symmetric (g_ij = g_ji). "
+            f"Asymmetric entries: {pairs}."
         )
 
     return g, syms, local_vars, n, coords
