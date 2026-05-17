@@ -1,0 +1,87 @@
+# ===========================
+# Python
+# ===========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+
+# Distribution / packaging
+.Python
+build/
+dist/
+eggs/
+.eggs/
+*.egg-info/
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+pytestdebug.log
+
+# mypy / pyright / type checkers
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyright/
+
+# ===========================
+# IDE & Editor
+# ===========================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# ===========================
+# OS
+# ===========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===========================
+# Project-specific
+# ===========================
+# Claude AI config (bersifat lokal)
+.claude/
+
+# Matplotlib output
+*.png
+*.svg
+*.pdf
+
+# Temporary / debug files
+command.txt
+*.log
+*.tmp
+
+# uv / hatch build cache
+.hatch/
