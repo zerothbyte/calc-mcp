@@ -89,11 +89,11 @@ def register_tools(mcp):
             f_vel = expr_to_callable(initial_velocity, "x")
 
             x = np.linspace(0, length, nx)
-            u_prev = f_disp(x)
+            u_prev = np.asarray(f_disp(x), dtype=float) * np.ones(nx)
             u_prev[0] = 0.0
             u_prev[-1] = 0.0
 
-            vel = f_vel(x)
+            vel = np.asarray(f_vel(x), dtype=float) * np.ones(nx)
             u_curr = np.copy(u_prev)
             u_curr[1:-1] = u_prev[1:-1] + 0.5 * r * (u_prev[2:] - 2*u_prev[1:-1] + u_prev[:-2]) + dt * vel[1:-1]
             u_curr[0] = 0.0
