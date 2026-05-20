@@ -43,7 +43,11 @@ def register_tools(mcp):
     def hypothesis_test(data: str, test_type: str = "ttest_1samp", alternative: str = "two-sided", value: float = 0, data2: str = "") -> str:
         """Run hypothesis test. Types: ttest_1samp, ttest_ind, ttest_paired, chi2, shapiro, mannwhitney, anova. data/data2: JSON arrays."""
         try:
+            if not data or not data.strip():
+                return "Error: data is empty. Provide a JSON array, e.g. [1.2, 2.3, 3.4]."
             arr = np.array(parse_json_array(data), dtype=float)
+            if len(arr) == 0:
+                return "Error: data array is empty. Provide at least one value, e.g. [1.2, 2.3, 3.4]."
 
             if test_type == "ttest_1samp":
                 stat, p = scipy_stats.ttest_1samp(arr, value, alternative=alternative)

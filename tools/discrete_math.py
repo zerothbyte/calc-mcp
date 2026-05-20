@@ -82,6 +82,10 @@ def register_tools(mcp):
         try:
             from tools.utils import parse_json_array
             nums = [int(x) for x in parse_json_array(numbers)]
+            if len(nums) == 0:
+                return "Error: Input list is empty. Provide at least one integer, e.g. [12, 18, 24]."
+            if len(nums) == 1:
+                return json.dumps({"numbers": nums, "gcd": nums[0], "lcm": nums[0]})
             from math import gcd
             from functools import reduce
             g = reduce(gcd, nums)
@@ -97,8 +101,14 @@ def register_tools(mcp):
             from tools.utils import parse_json_matrix
             matrix = parse_json_matrix(adjacency)
             n = len(matrix)
+            if n == 0:
+                return "Error: Adjacency matrix is empty."
+            if start < 0 or start >= n:
+                return f"Error: start={start} is out of range. Graph has {n} nodes (valid indices: 0 to {n-1})."
             if end == -1:
                 end = n - 1
+            if end < 0 or end >= n:
+                return f"Error: end={end} is out of range. Graph has {n} nodes (valid indices: 0 to {n-1})."
 
             dist = [float('inf')] * n
             dist[start] = 0
