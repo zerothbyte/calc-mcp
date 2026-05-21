@@ -146,9 +146,11 @@ def register_tools(mcp):
             dist = dist_map[distribution]()
 
             if operation == "random":
-                n = int(float(x)) if x else 10
-                samples = dist.rvs(size=n).tolist()
-                return json.dumps({"samples": samples, "count": n})
+                n_samples = int(float(x)) if x and x.strip() not in ("0", "") else 10
+                if n_samples <= 0:
+                    n_samples = 10
+                samples = dist.rvs(size=n_samples).tolist()
+                return json.dumps({"samples": samples, "count": n_samples})
             else:
                 x_vals = json.loads(x) if x.startswith("[") else [float(x)]
                 if operation == "pdf":

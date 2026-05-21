@@ -82,12 +82,23 @@ def register_tools(mcp):
             data = parse_json_matrix(matrix)
             m = np.array(data, dtype=float)
             n = m.shape[0]
+
             if num_eigenvalues >= n:
-                num_eigenvalues = n - 2
+                # ARPACK requires k < n; fall back to full dense eigensolver
+                import numpy.linalg as la
+                eigenvalues, _ = la.eig(m)
+                idx = np.argsort(np.abs(eigenvalues))[::-1]
+                eigenvalues = eigenvalues[idx][:num_eigenvalues]
+                eig_list = [{"real": complex(v).real, "imag": complex(v).imag} for v in eigenvalues]
+                return json.dumps({
+                    "eigenvalues": eig_list,
+                    "num_computed": len(eig_list),
+                    "method": "numpy dense (fallback for small matrix)",
+                    "which": which,
+                })
 
             sparse_m = csr_matrix(m)
             eigenvalues, eigenvectors = eigs(sparse_m, k=num_eigenvalues, which=which)
-
             eig_sorted = sorted(zip(eigenvalues.tolist(), eigenvectors.T.tolist()), key=lambda x: abs(x[0]), reverse=True)
 
             return json.dumps({
